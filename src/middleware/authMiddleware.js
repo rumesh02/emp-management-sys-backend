@@ -35,4 +35,27 @@ const protect = async (req, res, next) => {
     }
 };
 
-module.exports = { protect };
+
+//admin only
+const adminOnly = (req, res, next) => {
+    if (req.user && req.user.role === "admin"){
+        next();
+    } else {
+        return res.status(403).json({
+            message: "Not authorized as an admin"
+        });
+    }
+};
+
+//employee only
+const employeeOnly = (req, res, next) => {
+    if (req.user && req.user.role === "employee"){
+        next();
+    } else {
+        return res.status(403).json({
+            message: "Not authorized as an employee"
+        });
+    }
+};
+
+module.exports = { protect, adminOnly, employeeOnly };
